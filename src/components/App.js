@@ -9,7 +9,7 @@ import {VisitFirst, VisitLast, AccountProfile, VisitNumber, ProductCard} from ".
 import {Leads} from "./sfdc";
 import {mergedTheme} from "../theme";
 import {Chart} from "./misc";
-
+import {Ads} from "./ads";
 // import {QuizOverview} from "./quiz";
 
 import {userProfile,products as mocksProducts} from "../__mocks__";
@@ -129,6 +129,10 @@ const App = () => {
                     </Box>
                   </Grid>
                 </Grid>
+              </Grid>
+
+              <Grid item xs={12} >
+                <Ads adsId={portalData?.personalizedAds?.refNode?.uuid}/>
               </Grid>
             </Grid>
           </Container>
