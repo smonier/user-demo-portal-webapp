@@ -1,36 +1,38 @@
 import React, {useContext} from "react";
 import PropTypes from "prop-types";
 import {useLazyQuery} from "@apollo/client";
-import {queryPersonalizedAdsVariant} from "../../graphql";
+import {queryPersonalizedAdsVariant} from "../../graphql-app";
 import {CxsCtx} from "../../unomi/cxs";
 import {JahiaCtx} from "../../context";
 import {EmbeddedPathInHtmlResolver} from "../jahia";
-import {Card, CardActions, CardContent, Typography} from '@mui/material';
+import {Card, CardActionArea, CardMedia, CardContent, Typography} from '@mui/material';
+import {Media} from "../media";
+import {getTypes} from 'misc/utils'
 
 export const Ads = (props) => {
-    const {adsId} = props;
+    const {adsid} = props;
     const cxs = useContext(CxsCtx);
     const { workspace, locale } = useContext(JahiaCtx);
     const [loadVariant, variantQuery] = useLazyQuery(queryPersonalizedAdsVariant);
 
     React.useEffect(() => {
-        if (adsId && cxs) {
+        if (adsid && cxs) {
             loadVariant({
                 variables: {
                     workspace,
-                    id:adsId,
+                    id:adsid,
                     language: locale,
                     profileId: cxs.profileId,
                     sessionId: cxs.sessionId,
                 }
             })
         }
-    },[loadVariant,workspace,locale, adsId, cxs])
+    },[loadVariant,workspace,locale, adsid, cxs])
 
     // const {data, error, loading} = useQuery(queryPersonalizedAdsVariant, {
     //     variables: {
     //         workspace,
-    //         id:adsId,
+    //         id:adsid,
     //         language: locale,
     //         profileId: cxs.profileId,
     //         sessionId: cxs.sessionId,
@@ -39,20 +41,41 @@ export const Ads = (props) => {
     if (variantQuery.error) return <p>Error :(</p>;
     if (!variantQuery.data || variantQuery.loading) return <p>Loading...</p>;
 
+    const handleClick = () =>{
+        console.log("click ads !");
+        // window.location.href=""
+    }
     const {image,teaser} = variantQuery.data?.jcr?.nodeById?.jExperience?.resolve?.variant;
     return(
         <Card
             // sx={{ height: '100%' }}
             {...props}
         >
-            <CardContent>
-                <Typography component="div"
-                    children={<EmbeddedPathInHtmlResolver htmlAsString={teaser.value} />}/>
-            </CardContent>
+            <CardActionArea onClick={handleClick}>
+                {image &&
+                    <Media id={image.refNode.uuid}
+                           types={getTypes(image.refNode)}
+                           path={image.refNode.path}
+                           alt="background image"
+                           component={CardMedia}
+                           height="250"
+                    />
+                }
+                {/*<CardMedia*/}
+                {/*    component="img"*/}
+                {/*    height="140"*/}
+                {/*    image="/static/images/cards/contemplative-reptile.jpg"*/}
+                {/*    alt="green iguana"*/}
+                {/*/>*/}
+                <CardContent>
+                    <Typography component="div"
+                        children={<EmbeddedPathInHtmlResolver htmlAsString={teaser.value} />}/>
+                </CardContent>
+            </CardActionArea>
         </Card>
     )
 }
 
 Ads.propTypes = {
-    adsId: PropTypes.string.isRequired
+    adsid: PropTypes.string.isRequired
 };

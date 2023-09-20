@@ -13,9 +13,20 @@ import {JahiaCtxProvider} from "./context";
 import {syncTracker} from './unomi/trackerWem';
 
 import { registerChartJs } from './utils/register-chart-js';
-import {getClient} from "./graphql";
+import {getClient} from "./graphql-app";
 registerChartJs();
 
+export const cndTypes = {
+    WIDEN: "wdenmix:widenAsset",
+    WIDEN_IMAGE: "wdennt:image",
+    WIDEN_VIDEO: "wdennt:video",
+    CLOUDINARY: "cloudymix:cloudyAsset",
+    CLOUDINARY_IMAGE: "cloudynt:image",
+    CLOUDINARY_VIDEO: "cloudynt:video",
+    JNT_FILE: 'jnt:file',
+    IMAGE: 'jmix:image',
+    // CONTENT_PERSO: ["", ""],
+}
 const render = (target,context) =>{
 
     const {workspace,locale,host,isPreview,isEdit,scope,portalId,contextServerUrl,gqlEndpoint} = Object.assign({
@@ -90,7 +101,8 @@ const render = (target,context) =>{
                 portalId,
                 host,
                 isPreview,
-                isEdit
+                isEdit,
+                cndTypes
             }}
             >
                 <Store context={context}>

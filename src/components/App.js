@@ -13,7 +13,7 @@ import {Ads} from "./ads";
 // import {QuizOverview} from "./quiz";
 
 import {userProfile,products as mocksProducts} from "../__mocks__";
-import {queryUserPortal} from "../graphql"
+import {queryUserPortal} from "../graphql-app"
 import {useQuery} from "@apollo/client";
 
 
@@ -132,7 +132,11 @@ const App = () => {
               </Grid>
 
               <Grid item xs={12} >
-                <Ads adsId={portalData?.personalizedAds?.refNode?.uuid}/>
+                <Grid container spacing={3}>
+                  <Grid item xs={12} sm={6}>
+                    <Ads adsid={portalData?.personalizedAds?.refNode?.uuid}/>
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
           </Container>

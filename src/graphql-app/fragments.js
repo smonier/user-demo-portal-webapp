@@ -6,6 +6,9 @@ export const CORE_NODE_FIELDS = gql`
         uuid
         path
         name
-        primaryNodeType {name}
+        primaryNodeType {
+            name
+            supertypes{name}
+        }
         mixinTypes {name}
     }`;

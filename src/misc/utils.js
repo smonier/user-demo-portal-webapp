@@ -42,3 +42,13 @@ export const resolveJahiaEmbeddedURL = ({host,path, isPreview,isEdit,locale}) =>
 
     return pagePath;
 };
+
+export const getTypes = jcrProps => {
+    if(!jcrProps)
+        return [];
+
+    const superTypes = jcrProps.primaryNodeType.supertypes?.map(({name}) => name) || [];
+    const mixinTypes = jcrProps.mixinTypes.map(({name}) => name) || [];
+    const primaryNodeType = jcrProps.primaryNodeType?.name;
+    return [primaryNodeType,...superTypes,...mixinTypes];
+}
