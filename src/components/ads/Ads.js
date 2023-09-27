@@ -7,12 +7,12 @@ import {JahiaCtx} from "../../context";
 import {EmbeddedPathInHtmlResolver} from "../jahia";
 import {Card, CardActionArea, CardMedia, CardContent, Typography} from '@mui/material';
 import {Media} from "../media";
-import {getTypes} from 'misc/utils'
+import {getTypes, resolveLinkToURL} from 'misc/utils'
 
 export const Ads = (props) => {
     const {adsid} = props;
     const cxs = useContext(CxsCtx);
-    const { workspace, locale } = useContext(JahiaCtx);
+    const {workspace, locale, host, isPreview, isEdit} = useContext(JahiaCtx);
     const [loadVariant, variantQuery] = useLazyQuery(queryPersonalizedAdsVariant);
 
     React.useEffect(() => {
@@ -41,24 +41,33 @@ export const Ads = (props) => {
     if (variantQuery.error) return <p>Error :(</p>;
     if (!variantQuery.data || variantQuery.loading) return <p>Loading...</p>;
 
-    const handleClick = () =>{
-        console.log("click ads !");
-        // window.location.href=""
-    }
-    const {image,teaser} = variantQuery.data?.jcr?.nodeById?.jExperience?.resolve?.variant;
+    // const handleClick = () =>{
+    //     console.log("click ads !");
+    //     // window.location.href=""
+    // }
+    const variant = variantQuery.data?.jcr?.nodeById?.jExperience?.resolve?.variant
+    const {image,teaser,linkTarget} = variant;
+    const href = resolveLinkToURL({
+        host,
+        isEdit,
+        isPreview,
+        locale,
+        jcrProps:variant
+    });
+
     return(
         <Card
             // sx={{ height: '100%' }}
             {...props}
         >
-            <CardActionArea onClick={handleClick}>
+            <CardActionArea href={href || '#'} target={linkTarget.value}>
                 {image &&
                     <Media id={image.refNode.uuid}
                            types={getTypes(image.refNode)}
                            path={image.refNode.path}
                            alt="background image"
                            component={CardMedia}
-                           height="250"
+                           // height="250"
                     />
                 }
                 {/*<CardMedia*/}

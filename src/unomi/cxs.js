@@ -38,7 +38,7 @@ const CxsCtxProvider = ({children}) => {
                 }
             }
         };
-    });
+    },[]);
 // console.log("[provider] cxs : ",cxs);
     return (
         <CxsCtx.Provider value={cxs}>

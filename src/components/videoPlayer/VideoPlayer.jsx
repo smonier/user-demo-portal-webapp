@@ -1,13 +1,13 @@
 import React, {useRef} from 'react';
 import PropTypes from "prop-types";
-import {JahiaCtx} from "context";
+// import {JahiaCtx} from "context";
 import ReactPlayer from "react-player";
 // import {syncVideoStatus} from "unomi/trackerWem";
 
 export const VideoPlayer = (props)=>{
 
-    const {ownerID,videoURL,videoId} = props;
-    const { quizId,quizPath,quizType, isPreview } = React.useContext(JahiaCtx);
+    const {videoURL/*,ownerID,videoId*/} = props;
+    // const { quizId,quizPath,quizType, isPreview } = React.useContext(JahiaCtx);
 
     const player = useRef(null);
 

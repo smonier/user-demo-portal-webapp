@@ -30,18 +30,60 @@ export const resolveJahiaEmbeddedURL = ({host,path, isPreview,isEdit,locale}) =>
     let pagePath;
     switch (true){
         case (isPreview && isEdit) :
-            pagePath = `${host}${paths.edit}/${locale}${path}`;
+            pagePath = `${host}${paths.edit}/${locale}${path}.html`;
             break;
         case isPreview :
-            pagePath = `${host}${paths.preview}/${locale}${path}`;
+            pagePath = `${host}${paths.preview}/${locale}${path}.html`;
             break;
         default :
-            pagePath = `${host}/${locale}${path}`;
+            pagePath = `${host}/${locale}${path}.html`;
             break;
     }
 
     return pagePath;
 };
+
+const utmTerms = [
+    "utm_source",
+    "utm_medium",
+    "utm_campaign",
+    "utm_term",
+    "utm_content"
+]
+const resolveUTM = (jcrProps,urlSearch) => {
+    let params = new URLSearchParams(urlSearch);
+
+    utmTerms.forEach(utmParamName=>{
+        const utmParamValue = jcrProps[utmParamName]?.value;
+        if(utmParamValue)
+            params.append(utmParamName,utmParamValue)
+    });
+
+    return params.toString();
+}
+export const resolveLinkToURL = ({host, isPreview,isEdit,locale,jcrProps})  => {
+    const {linkType,internalLink,externalLink} = jcrProps;
+    if(!linkType?.value)
+        return ;
+
+    switch(linkType.value){
+        case "internalLink":
+            if (internalLink?.refNode) {
+                const {path} = internalLink.refNode;
+                const url = resolveJahiaEmbeddedURL({host,path,isPreview,isEdit,locale});
+                return `${url}?${resolveUTM(jcrProps)}`
+            }
+            break;
+        case "externalLink":
+            if (externalLink?.value) {
+                const url = new URL(externalLink.value);
+                return `${url.origin}${url.pathname}?${resolveUTM(jcrProps,url.search)}`
+            }
+            break;
+        default: return "#"
+    }
+}
+
 
 export const getTypes = jcrProps => {
     if(!jcrProps)

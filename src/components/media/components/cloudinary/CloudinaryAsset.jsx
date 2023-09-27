@@ -7,7 +7,7 @@ import {useQuery} from "@apollo/client";
 import {GetCloudyMedia} from "graphql-app";
 // import { useTranslation } from "react-i18next";
 
-export const CloudinaryAsset = ({types,id,width,sourceID}) => {
+export const CloudinaryAsset = ({types,id,width,sourceID,component,...props}) => {
     // const { t } = useTranslation();
     const { workspace, locale, cndTypes } = React.useContext(JahiaCtx);
 
@@ -28,7 +28,14 @@ export const CloudinaryAsset = ({types,id,width,sourceID}) => {
 
     switch (true){
         case types.includes(cndTypes.CLOUDINARY_IMAGE) :
-            return <CloudinaryImage title={title} baseUrl={baseUrl} endUrl={endUrl} width={width}/>
+            return <CloudinaryImage {...{
+                ...props,
+                title,
+                baseUrl,
+                endUrl,
+                width,
+                component
+            }}/>
 
         case types.includes(cndTypes.CLOUDINARY_VIDEO) :
             return <CloudinaryVideo videoId={id} videoURL={url} ownerID={sourceID} />
@@ -42,5 +49,6 @@ CloudinaryAsset.propTypes={
     types:PropTypes.array.isRequired,
     id:PropTypes.string,
     width:PropTypes.string,
-    sourceID:PropTypes.string
+    sourceID:PropTypes.string,
+    component:PropTypes.elementType
 }

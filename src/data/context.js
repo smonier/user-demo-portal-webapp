@@ -28,7 +28,7 @@ const headers = {
 
 
 export const getUserContext = (cxs,dispatch) => {
-    console.log("[getUserContext] cxs :",cxs);
+    // console.log("[getUserContext] cxs :",cxs);
     const contextServerPublicUrl = window.digitalData.contextServerPublicUrl || window.digitalData.wemInitConfig.contextServerUrl;
     const data = {
         requiredProfileProperties: ["*"],

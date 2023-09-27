@@ -134,5 +134,7 @@ export const SimpleDialog = (props) => {
 }
 
 SimpleDialog.propTypes = {
-    // usercategories: PropTypes.array.isRequired
+    onClose:PropTypes.func.isRequired,
+    open:PropTypes.bool.isRequired,
+    nodepath:PropTypes.string.isRequired
 };
