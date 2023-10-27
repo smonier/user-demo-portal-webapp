@@ -21,7 +21,7 @@ export const SimpleDialog = (props) => {
     const { workspace } = useContext(JahiaCtx);
     const { state, dispatch } = useContext(StoreCtx);
     const { userData, locale } = state;
-    const userCategories = userData?.profileProperties?.sfdc__energyPreferences || [];
+    const userCategories = userData?.profileProperties?.insuranceInterests || [];
     const form = React.useRef(null);
 
     const {data, error, loading} = useQuery(queryEnergyPreferences, {

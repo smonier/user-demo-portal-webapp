@@ -9,6 +9,7 @@ import {VisitFirst, VisitLast, AccountProfile, VisitNumber, ProductCard} from ".
 import {Leads} from "./sfdc";
 import {mergedTheme} from "../theme";
 import {Chart} from "./misc";
+import {MultiChart} from "./misc";
 import {Ads} from "./ads";
 import {Orders} from "./e-shop";
 // import {QuizOverview} from "./quiz";
@@ -70,6 +71,7 @@ const App = () => {
     }
   };
 
+  const customMultiChartData = portalData?.salesChart?.value || portalData?.mocks?.refNode?.salesChart?.value;
   const customChartData = portalData?.chart?.value || portalData?.mocks?.refNode?.chart?.value;
   const customLeadsData = portalData?.leads?.value || portalData?.mocks?.refNode?.leads?.value;
   const customOrdersData = portalData?.orders?.value || portalData?.mocks?.refNode?.orders?.value;
@@ -162,6 +164,13 @@ const App = () => {
                 </Grid>
               </Grid>
 
+              <Grid item xs={12}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <MultiChart customMultiChartData={customMultiChartData}/>
+                  </Grid>
+                </Grid>
+              </Grid>
               {/*<Grid item xs={12} >*/}
               {/*  <Grid container spacing={3}>*/}
               {/*    <Grid item xs={12} sm={6}>*/}
